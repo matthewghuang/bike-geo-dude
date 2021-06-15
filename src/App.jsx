@@ -33,18 +33,23 @@ export const App = () => {
 		console.log(bbox)
 
 		set_view_box(
-			`${-(window_size.width / 2 + bbox.width / 2)} ${-(
-				window_size.height / 2 +
-				bbox.height / 2
-			)} ${window_size.width} ${window_size.height}`
+			`${bbox.x - window_size.width / 2 + bbox.width / 2} ${
+				bbox.y - window_size.height / 2 + bbox.height / 2
+			} ${window_size.width} ${window_size.height}`
 		)
 	}, [svg.current])
 
 	const bike = new Bike({
-		seat_tube_length: 660,
+		seat_tube_length: 470,
 		seat_tube_angle: 73.5,
 		chainstay_length: 430,
-		bottom_bracket_drop: 72
+		bottom_bracket_drop: 70,
+		stack: 505,
+		reach: 362,
+		headtube_length: 90,
+		headtube_angle: 69,
+		fork_length: 395,
+		fork_rake: 50
 	})
 
 	return (
