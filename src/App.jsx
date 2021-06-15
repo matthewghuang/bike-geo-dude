@@ -41,10 +41,10 @@ export const App = () => {
 	}, [svg.current])
 
 	const bike = new Bike({
-		st_length: 660,
-		st_angle: 73.5,
-		cs_length: 430,
-		bb_drop: 72
+		seat_tube_length: 660,
+		seat_tube_angle: 73.5,
+		chainstay_length: 430,
+		bottom_bracket_drop: 72
 	})
 
 	return (
