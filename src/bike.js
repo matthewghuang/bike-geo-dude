@@ -5,7 +5,7 @@ const dtr = degrees => degrees * (Math.PI / 180)
 const rtd = radians => radians * (180 / Math.PI)
 
 export class Bike {
-	constructor(st_length, st_angle, cs_length, bb_drop) {
+	constructor({ st_length, st_angle, cs_length, bb_drop }) {
 		const cs_angle = rtd(Math.acos(bb_drop / cs_length))
 
 		console.log(cs_angle)

@@ -40,7 +40,12 @@ export const App = () => {
 		)
 	}, [svg.current])
 
-	const bike = new Bike(660, 73.5, 430, 72)
+	const bike = new Bike({
+		st_length: 660,
+		st_angle: 73.5,
+		cs_length: 430,
+		bb_drop: 72
+	})
 
 	return (
 		<>
