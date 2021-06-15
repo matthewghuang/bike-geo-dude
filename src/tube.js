@@ -7,7 +7,7 @@ export class Tube {
 	 * @param {Point} start
 	 * @param {Point} end
 	 */
-	constructor(start, end) {
+	constructor(start = { x: 0, y: 0 }, end = { x: 0, y: 0 }) {
 		this.start = start
 		this.end = end
 	}

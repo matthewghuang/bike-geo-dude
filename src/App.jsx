@@ -1,18 +1,26 @@
-import React, { useState, useEffect, useLayoutEffect } from "react"
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react"
+import { Bike } from "./bike"
 import { Point } from "./point"
 import { PointDisplay } from "./PointDisplay"
 import { Tube } from "./tube"
 import { TubeDisplay } from "./TubeDisplay"
 
+const dtr = degrees => (degrees * Math.PI) / 180
+
 export const App = () => {
+	const svg = useRef()
+
 	const [window_size, set_window_size] = useState({
 		width: window.innerWidth,
 		height: window.innerHeight
 	})
 
+	const [view_box, set_view_box] = useState("")
+
 	useLayoutEffect(() => {
 		const update_window_size = () => {
 			set_window_size({ width: window.innerWidth, height: window.innerHeight })
+			console.log(svg.current.getBBox())
 		}
 
 		update_window_size()
@@ -20,37 +28,35 @@ export const App = () => {
 		return () => window.removeEventListener("resize", update_window_size)
 	}, [])
 
-	const [points, set_points] = useState({
-		bottom_bracket: new Point(0, 0),
-		seat_clamp: new Point(-50, -650)
-	})
+	useLayoutEffect(() => {
+		const bbox = svg.current.getBBox()
+		console.log(bbox)
 
-	const [tubes, set_tubes] = useState({
-		seat_tube: new Tube()
-	})
+		set_view_box(
+			`${-(window_size.width / 2 + bbox.width / 2)} ${-(
+				window_size.height / 2 +
+				bbox.height / 2
+			)} ${window_size.width} ${window_size.height}`
+		)
+	}, [svg.current])
 
-	useEffect(() => {
-		set_tubes({
-			seat_tube: new Tube(points.bottom_bracket, points.seat_clamp)
-		})
-	}, [points])
+	const bike = new Bike(660, 73.5, 430, 72)
 
 	return (
 		<>
-			<svg width={window_size.width} height={window_size.height}>
-				<g
-					transform={`translate(${window_size.width / 2} ${
-						window_size.height / 2
-					}) scale(0.5)`}
-				>
-					{Object.entries(points).map(([name, pt]) => (
-						<PointDisplay name={name} point={pt}></PointDisplay>
-					))}
+			<svg
+				width={window_size.width}
+				height={window_size.height}
+				viewBox={view_box}
+				ref={svg}
+			>
+				{Object.entries(bike.points).map(([name, pt]) => (
+					<PointDisplay name={name} point={pt}></PointDisplay>
+				))}
 
-					{Object.entries(tubes).map(([name, tube]) => (
-						<TubeDisplay name={name} tube={tube}></TubeDisplay>
-					))}
-				</g>
+				{Object.entries(bike.tubes).map(([name, tube]) => (
+					<TubeDisplay name={name} tube={tube}></TubeDisplay>
+				))}
 			</svg>
 		</>
 	)
