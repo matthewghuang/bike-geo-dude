@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react"
 import { Bike } from "./bike"
-import { Point } from "./point"
-import { PointDisplay } from "./PointDisplay"
-import { Tube } from "./tube"
-import { TubeDisplay } from "./TubeDisplay"
-
-const dtr = degrees => (degrees * Math.PI) / 180
+import { BikeDisplay } from "./BikeDisplay"
 
 export const App = () => {
 	const svg = useRef()
@@ -39,17 +34,32 @@ export const App = () => {
 		)
 	}, [svg.current])
 
-	const bike = new Bike({
-		seat_tube_length: 470,
-		seat_tube_angle: 73.5,
-		chainstay_length: 430,
+	const bike_one = new Bike({
+		wheel_diameter: 622,
+		chain_stay_length: 420,
 		bottom_bracket_drop: 70,
-		stack: 505,
-		reach: 362,
-		headtube_length: 90,
-		headtube_angle: 69,
+		seat_tube_angle: 73.5,
+		seat_tube_length: 470,
+		wheel_base: 997,
+		head_tube_angle: 69,
+		head_tube_length: 90,
 		fork_length: 395,
-		fork_rake: 50
+		fork_rake: 50,
+		seat_post_length: 660
+	})
+
+	const bike_two = new Bike({
+		wheel_diameter: 622,
+		chain_stay_length: 420,
+		bottom_bracket_drop: 70,
+		seat_tube_angle: 72.5,
+		seat_tube_length: 500,
+		wheel_base: 1001,
+		head_tube_angle: 69.5,
+		head_tube_length: 105,
+		fork_length: 395,
+		fork_rake: 50,
+		seat_post_length: 660
 	})
 
 	return (
@@ -60,13 +70,16 @@ export const App = () => {
 				viewBox={view_box}
 				ref={svg}
 			>
-				{Object.entries(bike.points).map(([name, pt]) => (
-					<PointDisplay name={name} point={pt}></PointDisplay>
-				))}
-
-				{Object.entries(bike.tubes).map(([name, tube]) => (
-					<TubeDisplay name={name} tube={tube}></TubeDisplay>
-				))}
+				<BikeDisplay
+					bike={bike_one}
+					points={{ enabled: true, color: "purple" }}
+					tubes={{ enabled: true, color: "red" }}
+				></BikeDisplay>
+				<BikeDisplay
+					bike={bike_two}
+					points={{ enabled: true, color: "green" }}
+					tubes={{ enabled: true, color: "blue" }}
+				></BikeDisplay>
 			</svg>
 		</>
 	)
