@@ -8,6 +8,7 @@
     "dev": "snowpack dev"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.4",
     "@snowpack/plugin-react-refresh": "^2.4.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

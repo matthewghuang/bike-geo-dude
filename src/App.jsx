@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react"
 import { Bike } from "./bike"
 import { BikeDisplay } from "./BikeDisplay"
+import { Grid } from "@material-ui/core"
 
 export const App = () => {
 	const svg = useRef()
@@ -61,29 +62,31 @@ export const App = () => {
 
 	return (
 		<>
-			<div className="grid grid-cols-12">
-				<div className="col-span-2">
-					<div className="w-full h-16 bg-black">Bike Geo Dude</div>
-				</div>
-				<svg
-					width="100%"
-					height="100%"
-					viewBox={view_box}
-					ref={svg}
-					className="col-span-10"
-				>
-					<BikeDisplay
-						bike={bike_one}
-						points={{ enabled: true, color: "purple" }}
-						tubes={{ enabled: true, color: "purple" }}
-					></BikeDisplay>
-					<BikeDisplay
-						bike={bike_two}
-						points={{ enabled: true, color: "green" }}
-						tubes={{ enabled: true, color: "green" }}
-					></BikeDisplay>
-				</svg>
-			</div>
+			<Grid container>
+				<Grid item xs={2}>
+					<h1>Bike Geo Dude</h1>
+				</Grid>
+				<Grid item xs={10}>
+					<svg
+						width="100%"
+						height="100%"
+						viewBox={view_box}
+						ref={svg}
+						className="col-span-10"
+					>
+						<BikeDisplay
+							bike={bike_one}
+							points={{ enabled: true, color: "purple" }}
+							tubes={{ enabled: true, color: "purple" }}
+						></BikeDisplay>
+						<BikeDisplay
+							bike={bike_two}
+							points={{ enabled: true, color: "green" }}
+							tubes={{ enabled: true, color: "green" }}
+						></BikeDisplay>
+					</svg>
+				</Grid>
+			</Grid>
 		</>
 	)
 }
