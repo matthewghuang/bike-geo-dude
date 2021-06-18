@@ -13,10 +13,8 @@ export const App = () => {
 	const [view_box, set_view_box] = useState("")
 
 	useLayoutEffect(() => {
-		const update_window_size = () => {
+		const update_window_size = () =>
 			set_window_size({ width: window.innerWidth, height: window.innerHeight })
-			console.log(svg.current.getBBox())
-		}
 
 		update_window_size()
 		window.addEventListener("resize", update_window_size)
@@ -25,7 +23,6 @@ export const App = () => {
 
 	useLayoutEffect(() => {
 		const bbox = svg.current.getBBox()
-		console.log(bbox)
 
 		set_view_box(
 			`${bbox.x - window_size.width / 2 + bbox.width / 2} ${
@@ -64,23 +61,29 @@ export const App = () => {
 
 	return (
 		<>
-			<svg
-				width={window_size.width}
-				height={window_size.height}
-				viewBox={view_box}
-				ref={svg}
-			>
-				<BikeDisplay
-					bike={bike_one}
-					points={{ enabled: true, color: "purple" }}
-					tubes={{ enabled: true, color: "red" }}
-				></BikeDisplay>
-				<BikeDisplay
-					bike={bike_two}
-					points={{ enabled: true, color: "green" }}
-					tubes={{ enabled: true, color: "blue" }}
-				></BikeDisplay>
-			</svg>
+			<div className="grid grid-cols-12">
+				<div className="col-span-2">
+					<div className="w-full h-16 bg-black">Bike Geo Dude</div>
+				</div>
+				<svg
+					width="100%"
+					height="100%"
+					viewBox={view_box}
+					ref={svg}
+					className="col-span-10"
+				>
+					<BikeDisplay
+						bike={bike_one}
+						points={{ enabled: true, color: "purple" }}
+						tubes={{ enabled: true, color: "purple" }}
+					></BikeDisplay>
+					<BikeDisplay
+						bike={bike_two}
+						points={{ enabled: true, color: "green" }}
+						tubes={{ enabled: true, color: "green" }}
+					></BikeDisplay>
+				</svg>
+			</div>
 		</>
 	)
 }

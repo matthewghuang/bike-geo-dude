@@ -3,5 +3,5 @@ module.exports = {
 		public: "/",
 		src: "/dist"
 	},
-	plugins: ["@snowpack/plugin-postcss", "@snowpack/plugin-react-refresh"]
+	plugins: ["@snowpack/plugin-react-refresh"]
 }

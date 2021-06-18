@@ -6,7 +6,7 @@ export const BikeDisplay = ({ bike, points, tubes }) => {
 	if (!points) {
 		points = {
 			enabled: true,
-			color: "red"
+			color: "green"
 		}
 	}
 

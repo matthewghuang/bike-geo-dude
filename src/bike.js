@@ -4,6 +4,8 @@ import { Tube } from "./tube"
 const dtr = degrees => degrees * (Math.PI / 180)
 const rtd = radians => radians * (180 / Math.PI)
 
+const hyp = (p1, p2) => Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2)
+
 export class Bike {
 	constructor({
 		wheel_diameter,
@@ -112,14 +114,13 @@ export class Bike {
 			)
 		}
 
-		wheel_base = this.points.front_hub.x - this.points.rear_hub.x
-		stack = this.points.bottom_bracket.y - this.points.head_tube_top.y
-		reach = this.points.head_tube_top.x - this.points.bottom_bracket.x
-
 		const diff_y =
 			this.points.seat_tube_junction.y - this.points.head_tube_top.y
 		const ett_x = this.points.seat_tube_junction.x - diff_y / tan_sta
-		effective_top_tube_length = this.points.head_tube_top.x - ett_x
+		const ett_point = new Point(
+			this.points.head_tube_top.x - ett_x,
+			this.points.seat_tube_junction.y - diff_y
+		)
 
 		this.tubes = {
 			chain_stay: new Tube(this.points.rear_hub, this.points.bottom_bracket),
@@ -145,6 +146,23 @@ export class Bike {
 				this.points.head_tube_bottom
 			),
 			fork: new Tube(this.points.head_tube_bottom, this.points.front_hub)
+		}
+
+		const measurement = (p1, p2) => ({
+			start: p1,
+			end: p2,
+			length: hyp(p1, p2)
+		})
+
+		this.measurements = {
+			wheelbase: measurement(this.points.front_hub, this.points.rear_hub),
+			front_center: measurement(
+				this.points.bottom_bracket,
+				this.points.front_hub
+			),
+			stack: measurement(this.points.head_tube_top, this.points.bottom_bracket),
+			reach: measurement(this.points.bottom_bracket, this.points.head_tube_top),
+			effective_top_tube: measurement(ett_point, this.points.head_tube_top)
 		}
 	}
 }
