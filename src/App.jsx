@@ -50,14 +50,14 @@ export const App = () => {
 
 	const bike_two = new Bike({
 		wheel_diameter: 622,
-		chain_stay_length: 420,
+		chain_stay_length: 405,
 		bottom_bracket_drop: 70,
-		seat_tube_angle: 72.5,
-		seat_tube_length: 500,
-		wheel_base: 1001,
-		head_tube_angle: 69.5,
-		head_tube_length: 105,
-		fork_length: 395,
+		seat_tube_angle: 74.5,
+		seat_tube_length: 440,
+		effective_top_tube_length: 510,
+		head_tube_angle: 71,
+		head_tube_length: 135,
+		fork_length: 375,
 		fork_rake: 50,
 		seat_post_length: 660
 	})
