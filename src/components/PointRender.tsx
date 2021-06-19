@@ -10,13 +10,7 @@ interface Props {
 export const PointRender: React.FC<Props> = ({ name, point, color }) => {
 	return (
 		<>
-			<circle
-				cx={point.x}
-				cy={point.y}
-				r="10"
-				fill={color}
-				style={{ opacity: 0.5 }}
-			></circle>
+			<circle cx={point.x} cy={point.y} r="10" fill={color}></circle>
 		</>
 	)
 }

@@ -19,7 +19,7 @@ export const TubeRender: React.FC<Props> = ({ name, tube, color }) => {
 				x2={end.x}
 				y2={end.y}
 				stroke={color}
-				style={{ strokeWidth: 20, opacity: 0.5 }}
+				style={{ strokeWidth: 20 }}
 			></line>
 		</>
 	)

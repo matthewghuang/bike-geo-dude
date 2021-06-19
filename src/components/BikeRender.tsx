@@ -12,7 +12,7 @@ interface Props {
 export const BikeRender: React.FC<Props> = ({ bike, color, offset }) => {
 	return (
 		<>
-			<g transform={`translate(${offset})`}>
+			<g transform={`translate(${offset})`} style={{ opacity: 0.5 }}>
 				{Object.entries(bike.tubes).map(([name, tube], i) => (
 					<TubeRender
 						key={i}
