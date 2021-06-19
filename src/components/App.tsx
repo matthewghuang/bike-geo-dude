@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react"
-import { Bike } from "../data/bike"
+import { Bike } from "../types/bike"
 import { BikeDisplay } from "./BikeDisplay"
 import {
 	Grid,

@@ -1,7 +1,7 @@
 import React from "react"
-import { Bike } from "../data/bike"
-import { Point } from "../data/point"
-import { Tube } from "../data/tube"
+import { Bike } from "../types/bike"
+import { Point } from "../types/point"
+import { Tube } from "../types/tube"
 import { PointDisplay } from "./PointDisplay"
 import { TubeDisplay } from "./TubeDisplay"
 
