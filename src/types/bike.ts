@@ -7,7 +7,7 @@ const dtr = (degrees: number): number => degrees * (Math.PI / 180)
 const hyp = (p1: Point, p2: Point): number =>
 	Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2)
 
-interface BikeParameters {
+export interface BikeParameters {
 	wheel_diameter: number
 	chain_stay_length: number
 	bottom_bracket_drop: number

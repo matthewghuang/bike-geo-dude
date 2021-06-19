@@ -13,12 +13,22 @@ interface Props {
 export const BikeDisplay: React.FC<Props> = ({ bike, color }) => {
 	return (
 		<>
-			{Object.entries(bike.tubes).map(([name, tube]: [string, Tube]) => (
-				<TubeDisplay name={name} tube={tube} color={color}></TubeDisplay>
+			{Object.entries(bike.tubes).map(([name, tube], i) => (
+				<TubeDisplay
+					key={i}
+					name={name}
+					tube={tube}
+					color={color}
+				></TubeDisplay>
 			))}
 
-			{Object.entries(bike.points).map(([name, pt]: [string, Point]) => (
-				<PointDisplay name={name} point={pt} color={color}></PointDisplay>
+			{Object.entries(bike.points).map(([name, pt], i) => (
+				<PointDisplay
+					key={i}
+					name={name}
+					point={pt}
+					color={color}
+				></PointDisplay>
 			))}
 		</>
 	)

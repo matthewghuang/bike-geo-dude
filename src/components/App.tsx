@@ -30,10 +30,11 @@ export const App: React.FC = () => {
 
 	const add_bike = (bike: Bike) => {
 		set_bikes([...bikes, bike])
+
 		set_adding_bike(false)
 	}
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		const bbox = svg.current.getBBox()
 
 		set_view_box(
@@ -41,7 +42,7 @@ export const App: React.FC = () => {
 				bbox.y - svg.current.clientHeight / 2 + bbox.height / 2
 			} ${svg.current.clientWidth} ${svg.current.clientHeight}`
 		)
-	}, [svg.current, window.innerWidth, window.innerHeight])
+	}, [bikes])
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -53,11 +54,13 @@ export const App: React.FC = () => {
 					</Box>
 
 					<Divider orientation="horizontal"></Divider>
+
 					<Box p={1}>
 						{!adding_bike && (
 							<Button
 								variant="contained"
 								color="primary"
+								fullWidth
 								onClick={() => set_adding_bike(true)}
 							>
 								Add Bike
@@ -68,14 +71,14 @@ export const App: React.FC = () => {
 						)}
 					</Box>
 				</Box>
+
 				<Divider orientation="vertical"></Divider>
-				<svg
-					width="100%"
-					height="100%"
-					viewBox={view_box}
-					ref={svg}
-					className="col-span-10"
-				></svg>
+
+				<svg width="100%" height="100%" viewBox={view_box} ref={svg}>
+					{Object.values(bikes).map((bike, i) => (
+						<BikeDisplay key={i} bike={bike} color="red"></BikeDisplay>
+					))}
+				</svg>
 			</Box>
 		</ThemeProvider>
 	)
