@@ -1,5 +1,5 @@
 import React from "react"
-import { Tube } from "./tube"
+import { Tube } from "../data/tube"
 
 interface Props {
 	name: string

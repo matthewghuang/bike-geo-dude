@@ -1,5 +1,5 @@
 import React from "react"
-import { Point } from "./point"
+import { Point } from "../data/point"
 
 interface Props {
 	name: string
