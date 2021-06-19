@@ -2,10 +2,7 @@ import React, { useState, useEffect, useLayoutEffect, useRef } from "react"
 import { Bike } from "../types/bike"
 import { BikeDisplay } from "./BikeDisplay"
 import {
-	Grid,
-	Typography,
 	Button,
-	Paper,
 	Box,
 	ThemeProvider,
 	Divider,
@@ -13,7 +10,6 @@ import {
 	responsiveFontSizes,
 	createMuiTheme
 } from "@material-ui/core"
-import { spacing } from "@material-ui/system"
 import { AddBikeForm } from "./AddBikeForm"
 
 const theme = responsiveFontSizes(
@@ -52,9 +48,10 @@ export const App: React.FC = () => {
 			<CssBaseline />
 			<Box height="100vh" display="flex">
 				<Box width="25%">
-					<Box p={1}>
-						<Typography variant="h6">Bike Geo Dude</Typography>
+					<Box p={1} bgcolor="orange" color="white" fontSize="h4.fontSize">
+						Bike Geo Dude
 					</Box>
+
 					<Divider orientation="horizontal"></Divider>
 					<Box p={1}>
 						{!adding_bike && (
