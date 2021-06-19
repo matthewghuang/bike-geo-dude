@@ -8,7 +8,7 @@ interface Props {
 	color: string
 }
 
-export const BikeDisplay = ({ bike, color }: Props) => {
+export const BikeDisplay: React.FC<Props> = ({ bike, color }) => {
 	return (
 		<>
 			{Object.entries(bike.tubes).map(([name, tube]) => (

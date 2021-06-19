@@ -7,7 +7,7 @@ interface Props {
 	color: string
 }
 
-export const PointDisplay = ({ name, point, color }: Props) => {
+export const PointDisplay: React.FC<Props> = ({ name, point, color }) => {
 	return (
 		<>
 			<circle
@@ -17,9 +17,6 @@ export const PointDisplay = ({ name, point, color }: Props) => {
 				fill={color}
 				style={{ opacity: 0.5 }}
 			></circle>
-			{/* <text x={point.x + 10} y={point.y + 10} fill={color}>
-				{name}
-			</text> */}
 		</>
 	)
 }

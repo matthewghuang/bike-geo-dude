@@ -7,7 +7,7 @@ interface Props {
 	color: string
 }
 
-export const TubeDisplay = ({ name, tube, color }: Props) => {
+export const TubeDisplay: React.FC<Props> = ({ name, tube, color }) => {
 	const start = tube.start
 	const end = tube.end
 
