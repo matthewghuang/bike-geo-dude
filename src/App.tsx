@@ -26,7 +26,10 @@ const theme = responsiveFontSizes(
 export const App: React.FC = () => {
 	const svg: React.Ref<SVGSVGElement> = useRef()
 
-	const [view_box, set_view_box] = useState("")
+	const [view_box, set_view_box] = useState<string>("")
+	const [bikes, set_bikes] = useState<Bike[]>([])
+
+	const add_bike = (bike: Bike) => set_bikes([...bikes, bike])
 
 	useLayoutEffect(() => {
 		const bbox = svg.current.getBBox()
