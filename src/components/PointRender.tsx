@@ -7,7 +7,7 @@ interface Props {
 	color: string
 }
 
-export const PointDisplay: React.FC<Props> = ({ name, point, color }) => {
+export const PointRender: React.FC<Props> = ({ name, point, color }) => {
 	return (
 		<>
 			<circle

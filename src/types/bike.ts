@@ -61,6 +61,7 @@ export class Bike {
 	points: Points
 	tubes: Tubes
 	measurements: Measurements
+	offset: number
 
 	constructor({
 		wheel_diameter,
@@ -78,6 +79,7 @@ export class Bike {
 		this.points = {} as Points
 		this.tubes = {} as Tubes
 		this.measurements = {} as Measurements
+		this.offset = 0
 
 		this.points.rear_hub = { x: wheel_diameter / 2, y: wheel_diameter / 2 }
 

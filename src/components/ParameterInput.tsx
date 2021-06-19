@@ -16,7 +16,7 @@ export const ParameterInput: React.FC<Props> = ({ name, value, setter }) => {
 			value={value}
 			fullWidth
 			inputProps={{ min: 0 }}
-			onChange={ev => setter(name, parseInt(ev.target.value))}
+			onChange={ev => setter(name, Number(ev.target.value))}
 		></TextField>
 	)
 }

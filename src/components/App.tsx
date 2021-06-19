@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react"
 import { Bike } from "../types/bike"
-import { BikeDisplay } from "./BikeDisplay"
+import { BikeRender } from "./BikeRender"
 import {
 	Button,
 	Box,
@@ -29,7 +29,13 @@ export const App: React.FC = () => {
 	const [adding_bike, set_adding_bike] = useState<boolean>(false)
 
 	const add_bike = (bike: Bike) => {
-		set_bikes([...bikes, bike])
+		const new_bike = { ...bike }
+
+		if (bikes.length > 0)
+			new_bike.offset =
+				bikes[0].points.bottom_bracket.x - bike.points.bottom_bracket.x
+
+		set_bikes([...bikes, new_bike])
 
 		set_adding_bike(false)
 	}
@@ -88,7 +94,12 @@ export const App: React.FC = () => {
 
 				<svg width="100%" height="100%" viewBox={view_box} ref={svg}>
 					{Object.values(bikes).map((bike, i) => (
-						<BikeDisplay key={i} bike={bike} color="red"></BikeDisplay>
+						<BikeRender
+							key={i}
+							bike={bike}
+							color="red"
+							offset={bike.offset}
+						></BikeRender>
 					))}
 				</svg>
 			</Box>
