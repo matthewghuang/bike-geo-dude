@@ -110,7 +110,7 @@ export const AddBikeForm: React.FC<Props> = ({ add_bike_handler }) => {
 				</Grid>
 				<Box mt={1}>
 					<TextField
-						label="Front"
+						label="front end measurement"
 						fullWidth
 						select
 						value={front_end_calculation}

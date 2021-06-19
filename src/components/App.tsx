@@ -58,7 +58,7 @@ export const App: React.FC = () => {
 					<Box p={1}>
 						{!adding_bike && (
 							<Button
-								variant="contained"
+								variant="outlined"
 								color="primary"
 								fullWidth
 								onClick={() => set_adding_bike(true)}
@@ -67,7 +67,19 @@ export const App: React.FC = () => {
 							</Button>
 						)}
 						{adding_bike && (
-							<AddBikeForm add_bike_handler={add_bike}></AddBikeForm>
+							<>
+								<AddBikeForm add_bike_handler={add_bike}></AddBikeForm>
+								<Box mt={1}>
+									<Button
+										variant="contained"
+										color="secondary"
+										fullWidth
+										onClick={() => set_adding_bike(false)}
+									>
+										Cancel
+									</Button>
+								</Box>
+							</>
 						)}
 					</Box>
 				</Box>
