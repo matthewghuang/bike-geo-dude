@@ -17,7 +17,7 @@ const theme = responsiveFontSizes(
 		typography: {
 			fontFamily: "Roboto"
 		},
-		spacing: 8
+		spacing: 12
 	})
 )
 
