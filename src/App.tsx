@@ -23,8 +23,8 @@ const theme = responsiveFontSizes(
 	})
 )
 
-export const App = () => {
-	const svg = useRef()
+export const App: React.FC = () => {
+	const svg: React.Ref<SVGSVGElement> = useRef()
 
 	const [view_box, set_view_box] = useState("")
 

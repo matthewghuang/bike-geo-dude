@@ -1,6 +1,13 @@
 import React from "react"
+import { Point } from "./point"
 
-export const PointDisplay = ({ name, point, color = "red" }) => {
+interface Props {
+	name: string
+	point: Point
+	color: string
+}
+
+export const PointDisplay = ({ name, point, color }: Props) => {
 	return (
 		<>
 			<circle
