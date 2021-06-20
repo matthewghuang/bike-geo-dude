@@ -86,7 +86,7 @@ export const AddBikeForm: React.FC<{
 						value={parameter}
 						handler={new_value => {
 							const obj = { ...props.parameters }
-							obj[name] = Number(new_value)
+							obj[name] = new_value == "0" ? undefined : Number(new_value)
 							props.set_parameters(obj)
 						}}
 						input_props={{ type: "number", inputProps: { min: 0 } }}
