@@ -16,7 +16,7 @@ import { BikesDisplay } from "./BikesDisplay"
 const theme = responsiveFontSizes(
 	createMuiTheme({
 		typography: {
-			fontFamily: "Roboto"
+			fontFamily: "Roboto, sans-serif"
 		},
 		spacing: 12
 	})
