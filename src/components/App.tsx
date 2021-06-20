@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core"
 import { AddBikeForm } from "./AddBikeForm"
 import { BikesDisplay } from "./BikesDisplay"
+import localforage from "localforage"
 
 const theme = responsiveFontSizes(
 	createMuiTheme({
@@ -44,16 +45,11 @@ export const App: React.FC = () => {
 			wheel_base: undefined,
 			stack: undefined,
 			reach: undefined,
-			fork_length: 375,
-			wheel_diameter: 622
+			fork_length: 375
 		})
 
 	const add_bike = (bike: Bike) => {
 		const new_bike = { ...bike }
-
-		if (bikes.length > 0)
-			new_bike.offset =
-				bikes[0].points.bottom_bracket.x - bike.points.bottom_bracket.x
 
 		set_bikes([...bikes, new_bike])
 
@@ -86,6 +82,40 @@ export const App: React.FC = () => {
 			} ${svg.current.clientWidth} ${svg.current.clientHeight}`
 		)
 	}, [bikes])
+
+	useEffect(() => {
+		const save_data = async () => {
+			await localforage.setItem("bikes", bikes)
+			await localforage.setItem("new_bike_name", new_bike_name)
+			await localforage.setItem("new_bike_color", new_bike_color)
+			await localforage.setItem("new_bike_parameters", new_bike_parameters)
+		}
+
+		save_data()
+	}, [bikes, new_bike_name, new_bike_color, new_bike_parameters])
+
+	useEffect(() => {
+		const sync_data = async () => {
+			const bikes = await localforage.getItem<Bike[]>("bikes")
+
+			if (bikes) {
+				const saved_new_bike_name = await localforage.getItem<string>(
+					"new_bike_name"
+				)
+				const saved_new_bike_color = await localforage.getItem<string>(
+					"new_bike_color"
+				)
+				const saved_new_bike_parameters =
+					await localforage.getItem<BikeParameters>("new_bike_parameters")
+				set_bikes(bikes)
+				set_new_bike_name(saved_new_bike_name)
+				set_new_bike_color(saved_new_bike_color)
+				set_new_bike_parameters(saved_new_bike_parameters)
+			}
+		}
+
+		sync_data()
+	}, [])
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -138,12 +168,7 @@ export const App: React.FC = () => {
 
 				<svg width="100%" height="100%" viewBox={view_box} ref={svg}>
 					{Object.values(bikes).map((bike, i) => (
-						<BikeRender
-							key={i}
-							bike={bike}
-							color={bike.color}
-							offset={bike.offset}
-						></BikeRender>
+						<BikeRender key={i} bike={bike} color={bike.color}></BikeRender>
 					))}
 				</svg>
 			</Box>
