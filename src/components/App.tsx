@@ -81,6 +81,12 @@ export const App: React.FC = () => {
 		set_bikes(bikes.filter((_, i) => i != index))
 	}
 
+	const hide_bike = (index: number) => {
+		const new_bikes = [...bikes]
+		new_bikes[index].hidden = !new_bikes[index].hidden
+		set_bikes(new_bikes)
+	}
+
 	const on_drag_end = (result: any) => {
 		if (!result.destination) return
 
@@ -177,6 +183,7 @@ export const App: React.FC = () => {
 							edit_handler={edit_bike}
 							delete_handler={remove_bike}
 							on_drag_end={on_drag_end}
+							hidden_handler={hide_bike}
 						></BikesDisplay>
 					</Box>
 				</Box>
@@ -186,6 +193,7 @@ export const App: React.FC = () => {
 				<svg width="100%" height="100%" viewBox={view_box} ref={svg}>
 					{Object.values(bikes)
 						.reverse()
+						.filter(bike => !bike.hidden)
 						.map((bike, i) => (
 							<BikeRender key={i} bike={bike} color={bike.color}></BikeRender>
 						))}

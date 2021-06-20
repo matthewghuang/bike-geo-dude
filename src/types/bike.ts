@@ -54,6 +54,7 @@ export class Bike {
 	name: string
 	color: string
 	parameters: BikeParameters
+	hidden: boolean
 	points: Points
 	tubes: Tubes
 	measurements: Measurements
@@ -62,6 +63,7 @@ export class Bike {
 		this.name = name
 		this.color = color
 		this.parameters = parameters
+		this.hidden = false
 		this.points = {} as Points
 		this.tubes = {} as Tubes
 		this.measurements = {} as Measurements

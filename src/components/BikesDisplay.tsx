@@ -7,8 +7,9 @@ export const BikesDisplay: React.FC<{
 	bikes: Bike[]
 	edit_handler: (index: number) => void
 	delete_handler: (index: number) => void
+	hidden_handler: (index: number) => void
 	on_drag_end: (result: any) => void
-}> = ({ bikes, edit_handler, delete_handler, on_drag_end }) => {
+}> = ({ bikes, edit_handler, delete_handler, hidden_handler, on_drag_end }) => {
 	return (
 		<DragDropContext onDragEnd={on_drag_end}>
 			<Droppable droppableId="bike-list">
@@ -29,10 +30,11 @@ export const BikesDisplay: React.FC<{
 												style={{ alignItems: "center" }}
 											>
 												<Box
-													component={Paper}
-													color="white"
-													bgcolor={bike.color}
+													component={!bike.hidden && Paper}
+													color={bike.hidden ? "black" : "white"}
+													bgcolor={!bike.hidden && bike.color}
 													p={1}
+													onClick={() => hidden_handler(i)}
 												>
 													{bike.name}
 												</Box>
