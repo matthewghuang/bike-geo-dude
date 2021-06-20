@@ -23,6 +23,14 @@ const theme = responsiveFontSizes(
 	})
 )
 
+const reorder = (list, start_index, end_index) => {
+	const result = Array.from(list)
+	const [removed] = result.splice(start_index, 1)
+	result.splice(end_index, 0, removed)
+
+	return result
+}
+
 export const App: React.FC = () => {
 	const svg: React.Ref<SVGSVGElement> = useRef()
 
@@ -71,6 +79,14 @@ export const App: React.FC = () => {
 
 	const remove_bike = (index: number) => {
 		set_bikes(bikes.filter((_, i) => i != index))
+	}
+
+	const on_drag_end = (result: any) => {
+		if (!result.destination) return
+
+		const items = reorder(bikes, result.source.index, result.destination.index)
+
+		set_bikes(items as Bike[])
 	}
 
 	useEffect(() => {
@@ -160,6 +176,7 @@ export const App: React.FC = () => {
 							bikes={bikes}
 							edit_handler={edit_bike}
 							delete_handler={remove_bike}
+							on_drag_end={on_drag_end}
 						></BikesDisplay>
 					</Box>
 				</Box>
