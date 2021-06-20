@@ -8,7 +8,6 @@ const hyp = (p1: Point, p2: Point): number =>
 	Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2)
 
 export interface BikeParameters {
-	wheel_diameter: number
 	chain_stay_length: number
 	bottom_bracket_drop: number
 	seat_tube_angle: number
@@ -58,7 +57,6 @@ export class Bike {
 	points: Points
 	tubes: Tubes
 	measurements: Measurements
-	offset: number
 
 	constructor(name: string, color: string, parameters: BikeParameters) {
 		this.name = name
@@ -67,22 +65,19 @@ export class Bike {
 		this.points = {} as Points
 		this.tubes = {} as Tubes
 		this.measurements = {} as Measurements
-		this.offset = 0
 
-		this.points.rear_hub = {
-			x: parameters.wheel_diameter / 2,
-			y: parameters.wheel_diameter / 2
+		this.points.bottom_bracket = {
+			x: 0,
+			y: 0
 		}
 
 		const chain_stay_angle = Math.asin(
 			parameters.bottom_bracket_drop / parameters.chain_stay_length
 		)
 
-		this.points.bottom_bracket = {
-			x:
-				this.points.rear_hub.x +
-				parameters.chain_stay_length * Math.cos(chain_stay_angle),
-			y: this.points.rear_hub.y + parameters.bottom_bracket_drop
+		this.points.rear_hub = {
+			x: -(parameters.chain_stay_length * Math.cos(chain_stay_angle)),
+			y: -(parameters.chain_stay_length * Math.sin(chain_stay_angle))
 		}
 
 		const sin_sta = Math.sin(dtr(parameters.seat_tube_angle))
