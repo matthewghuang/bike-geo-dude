@@ -13,19 +13,14 @@ export interface BikeParameters {
 	bottom_bracket_drop: number
 	seat_tube_angle: number
 	seat_tube_length: number
-	front: FrontBikeParameters
 	head_tube_angle: number
 	head_tube_length: number
 	fork_length: number
 	fork_rake: number
-	seat_post_length: number
-}
-
-interface FrontBikeParameters {
-	wheel_base?: number
-	effective_top_tube_length?: number
-	stack?: number
-	reach?: number
+	wheel_base: number
+	effective_top_tube_length: number
+	stack: number
+	reach: number
 }
 
 interface Points {
@@ -42,7 +37,6 @@ interface Tubes {
 	chain_stay: Tube
 	seat_stay: Tube
 	seat_tube: Tube
-	seat_post: Tube
 	down_tube: Tube
 	top_tube: Tube
 	head_tube: Tube
@@ -60,125 +54,111 @@ interface Measurements {
 export class Bike {
 	name: string
 	color: string
+	parameters: BikeParameters
 	points: Points
 	tubes: Tubes
 	measurements: Measurements
 	offset: number
 
-	constructor(
-		name: string,
-		color: string,
-		{
-			wheel_diameter,
-			bottom_bracket_drop,
-			chain_stay_length,
-			seat_tube_angle,
-			seat_tube_length,
-			seat_post_length,
-			head_tube_angle,
-			fork_rake,
-			fork_length,
-			head_tube_length,
-			front
-		}: BikeParameters
-	) {
+	constructor(name: string, color: string, parameters: BikeParameters) {
 		this.name = name
 		this.color = color
+		this.parameters = parameters
 		this.points = {} as Points
 		this.tubes = {} as Tubes
 		this.measurements = {} as Measurements
 		this.offset = 0
 
-		this.points.rear_hub = { x: wheel_diameter / 2, y: wheel_diameter / 2 }
+		this.points.rear_hub = {
+			x: parameters.wheel_diameter / 2,
+			y: parameters.wheel_diameter / 2
+		}
 
-		const chain_stay_angle = Math.asin(bottom_bracket_drop / chain_stay_length)
+		const chain_stay_angle = Math.asin(
+			parameters.bottom_bracket_drop / parameters.chain_stay_length
+		)
 
 		this.points.bottom_bracket = {
 			x:
-				this.points.rear_hub.x + chain_stay_length * Math.cos(chain_stay_angle),
-			y: this.points.rear_hub.y + bottom_bracket_drop
+				this.points.rear_hub.x +
+				parameters.chain_stay_length * Math.cos(chain_stay_angle),
+			y: this.points.rear_hub.y + parameters.bottom_bracket_drop
 		}
 
-		const sin_sta = Math.sin(dtr(seat_tube_angle))
-		const cos_sta = Math.cos(dtr(seat_tube_angle))
-		const tan_sta = Math.tan(dtr(seat_tube_angle))
+		const sin_sta = Math.sin(dtr(parameters.seat_tube_angle))
+		const cos_sta = Math.cos(dtr(parameters.seat_tube_angle))
+		const tan_sta = Math.tan(dtr(parameters.seat_tube_angle))
 
 		this.points.seat_tube_junction = {
-			x: this.points.bottom_bracket.x - seat_tube_length * cos_sta,
-			y: this.points.bottom_bracket.y - seat_tube_length * sin_sta
+			x: this.points.bottom_bracket.x - parameters.seat_tube_length * cos_sta,
+			y: this.points.bottom_bracket.y - parameters.seat_tube_length * sin_sta
 		}
 
-		this.points.seat_post_top = {
-			x:
-				this.points.seat_tube_junction.x -
-				(seat_post_length - seat_tube_length) * cos_sta,
-			y:
-				this.points.seat_tube_junction.y -
-				(seat_post_length - seat_tube_length) * sin_sta
-		}
+		const sin_hta = Math.sin(dtr(parameters.head_tube_angle))
+		const cos_hta = Math.cos(dtr(parameters.head_tube_angle))
 
-		const sin_hta = Math.sin(dtr(head_tube_angle))
-		const cos_hta = Math.cos(dtr(head_tube_angle))
-
-		if (front.wheel_base != undefined) {
+		if (parameters.wheel_base != undefined) {
 			this.points.front_hub = {
-				x: this.points.rear_hub.x + front.wheel_base,
+				x: this.points.rear_hub.x + parameters.wheel_base,
 				y: this.points.rear_hub.y
 			}
 
 			const rake_point = {
-				x: this.points.front_hub.x - fork_rake * sin_hta,
-				y: this.points.front_hub.y + fork_rake * cos_hta
+				x: this.points.front_hub.x - parameters.fork_rake * sin_hta,
+				y: this.points.front_hub.y + parameters.fork_rake * cos_hta
 			}
 
 			this.points.head_tube_bottom = {
-				x: rake_point.x - fork_length * cos_hta,
-				y: rake_point.y - fork_length * sin_hta
+				x: rake_point.x - parameters.fork_length * cos_hta,
+				y: rake_point.y - parameters.fork_length * sin_hta
 			}
 
 			this.points.head_tube_top = {
-				x: this.points.head_tube_bottom.x - head_tube_length * cos_hta,
-				y: this.points.head_tube_bottom.y - head_tube_length * sin_hta
+				x:
+					this.points.head_tube_bottom.x -
+					parameters.head_tube_length * cos_hta,
+				y:
+					this.points.head_tube_bottom.y - parameters.head_tube_length * sin_hta
 			}
-		} else if (front.effective_top_tube_length != undefined) {
+		} else if (parameters.effective_top_tube_length != undefined) {
 			const fh_y = this.points.rear_hub.y
-			const rake_point_y = fh_y + fork_rake * cos_hta
-			const ht_bottom_y = rake_point_y - fork_length * sin_hta
-			const ht_top_y = ht_bottom_y - head_tube_length * sin_hta
+			const rake_point_y = fh_y + parameters.fork_rake * cos_hta
+			const ht_bottom_y = rake_point_y - parameters.fork_length * sin_hta
+			const ht_top_y = ht_bottom_y - parameters.head_tube_length * sin_hta
 			const diff_y = this.points.seat_tube_junction.y - ht_top_y
 			const ett_x = this.points.seat_tube_junction.x - diff_y / tan_sta
 			this.points.head_tube_top = {
-				x: ett_x + front.effective_top_tube_length,
+				x: ett_x + parameters.effective_top_tube_length,
 				y: ht_top_y
 			}
 			this.points.head_tube_bottom = {
-				x: this.points.head_tube_top.x + head_tube_length * cos_hta,
-				y: this.points.head_tube_top.y + head_tube_length * sin_hta
+				x: this.points.head_tube_top.x + parameters.head_tube_length * cos_hta,
+				y: this.points.head_tube_top.y + parameters.head_tube_length * sin_hta
 			}
 			const rake_point = {
-				x: this.points.head_tube_bottom.x + fork_length * cos_hta,
-				y: this.points.head_tube_bottom.y + fork_length * sin_hta
+				x: this.points.head_tube_bottom.x + parameters.fork_length * cos_hta,
+				y: this.points.head_tube_bottom.y + parameters.fork_length * sin_hta
 			}
 			this.points.front_hub = {
-				x: rake_point.x + fork_rake * sin_hta,
-				y: rake_point.y - fork_rake * cos_hta
+				x: rake_point.x + parameters.fork_rake * sin_hta,
+				y: rake_point.y - parameters.fork_rake * cos_hta
 			}
-		} else if (front.stack != undefined && front.reach != undefined) {
+		} else if (parameters.stack != undefined && parameters.reach != undefined) {
 			this.points.head_tube_top = {
-				x: this.points.bottom_bracket.x + front.reach,
-				y: this.points.bottom_bracket.y - front.stack
+				x: this.points.bottom_bracket.x + parameters.reach,
+				y: this.points.bottom_bracket.y - parameters.stack
 			}
 			this.points.head_tube_bottom = {
-				x: this.points.head_tube_top.x + head_tube_length * cos_hta,
-				y: this.points.head_tube_top.y + head_tube_length * sin_hta
+				x: this.points.head_tube_top.x + parameters.head_tube_length * cos_hta,
+				y: this.points.head_tube_top.y + parameters.head_tube_length * sin_hta
 			}
 			const rake_point = {
-				x: this.points.head_tube_bottom.x + fork_length * cos_hta,
-				y: this.points.head_tube_bottom.y + fork_length * sin_hta
+				x: this.points.head_tube_bottom.x + parameters.fork_length * cos_hta,
+				y: this.points.head_tube_bottom.y + parameters.fork_length * sin_hta
 			}
 			this.points.front_hub = {
-				x: rake_point.x + fork_rake * sin_hta,
-				y: rake_point.y - fork_rake * cos_hta
+				x: rake_point.x + parameters.fork_rake * sin_hta,
+				y: rake_point.y - parameters.fork_rake * cos_hta
 			}
 		}
 
@@ -202,10 +182,6 @@ export class Bike {
 			seat_tube: {
 				start: this.points.bottom_bracket,
 				end: this.points.seat_tube_junction
-			},
-			seat_post: {
-				start: this.points.seat_tube_junction,
-				end: this.points.seat_post_top
 			},
 			down_tube: {
 				start: this.points.bottom_bracket,

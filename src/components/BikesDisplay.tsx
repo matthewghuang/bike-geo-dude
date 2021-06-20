@@ -1,52 +1,39 @@
 import React from "react"
 import { Bike } from "../types/bike"
-import {
-	Box,
-	Paper,
-	Divider,
-	Button,
-	Table,
-	TableBody,
-	TableRow,
-	TableCell
-} from "@material-ui/core"
+import { Box, Paper, Button, Grid } from "@material-ui/core"
 
-interface Props {
+export const BikesDisplay: React.FC<{
 	bikes: Bike[]
+	edit_handler: (index: number) => void
 	delete_handler: (index: number) => void
-}
-
-export const BikesDisplay: React.FC<Props> = ({ bikes, delete_handler }) => {
+}> = ({ bikes, edit_handler, delete_handler }) => {
 	return (
 		<>
 			{Object.values(bikes).map((bike, i) => (
 				<Box component={Paper} mb={1}>
-					<Box
-						p={1}
-						display="flex"
-						style={{ alignItems: "center", justifyContent: "space-between" }}
-					>
-						<Box color={bike.color} p={1}>
+					<Box p={1} display="flex" style={{ alignItems: "center" }}>
+						<Box component={Paper} color="white" bgcolor={bike.color} p={1}>
 							{bike.name}
 						</Box>
-						<Button
-							variant="outlined"
-							color="secondary"
-							onClick={() => delete_handler(i)}
-						>
-							Delete
-						</Button>
-					</Box>
-					<Divider orientation="horizontal"></Divider>
-					<Box p={1}>
-						<Table component={Paper}>
-							{Object.entries(bike.measurements).map(([name, measurement]) => (
-								<TableRow>
-									<TableCell>{name}</TableCell>
-									<TableCell>{Math.floor(measurement.length + 0.5)}</TableCell>
-								</TableRow>
-							))}
-						</Table>
+						<Box ml="auto">
+							<Box mr={1} display="inline">
+								<Button
+									variant="outlined"
+									color="secondary"
+									onClick={() => edit_handler(i)}
+								>
+									Edit
+								</Button>
+							</Box>
+
+							<Button
+								variant="outlined"
+								color="secondary"
+								onClick={() => delete_handler(i)}
+							>
+								Delete
+							</Button>
+						</Box>
 					</Box>
 				</Box>
 			))}
