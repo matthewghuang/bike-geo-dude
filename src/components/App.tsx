@@ -184,9 +184,11 @@ export const App: React.FC = () => {
 				<Divider orientation="vertical"></Divider>
 
 				<svg width="100%" height="100%" viewBox={view_box} ref={svg}>
-					{Object.values(bikes).map((bike, i) => (
-						<BikeRender key={i} bike={bike} color={bike.color}></BikeRender>
-					))}
+					{Object.values(bikes)
+						.reverse()
+						.map((bike, i) => (
+							<BikeRender key={i} bike={bike} color={bike.color}></BikeRender>
+						))}
 				</svg>
 			</Box>
 		</ThemeProvider>
