@@ -50,7 +50,7 @@ interface Tubes {
 }
 
 interface Measurements {
-	wheelbase: Measurement
+	wheel_base: Measurement
 	front_center: Measurement
 	stack: Measurement
 	reach: Measurement
@@ -58,24 +58,32 @@ interface Measurements {
 }
 
 export class Bike {
+	name: string
+	color: string
 	points: Points
 	tubes: Tubes
 	measurements: Measurements
 	offset: number
 
-	constructor({
-		wheel_diameter,
-		bottom_bracket_drop,
-		chain_stay_length,
-		seat_tube_angle,
-		seat_tube_length,
-		seat_post_length,
-		head_tube_angle,
-		fork_rake,
-		fork_length,
-		head_tube_length,
-		front
-	}: BikeParameters) {
+	constructor(
+		name: string,
+		color: string,
+		{
+			wheel_diameter,
+			bottom_bracket_drop,
+			chain_stay_length,
+			seat_tube_angle,
+			seat_tube_length,
+			seat_post_length,
+			head_tube_angle,
+			fork_rake,
+			fork_length,
+			head_tube_length,
+			front
+		}: BikeParameters
+	) {
+		this.name = name
+		this.color = color
 		this.points = {} as Points
 		this.tubes = {} as Tubes
 		this.measurements = {} as Measurements
@@ -214,33 +222,32 @@ export class Bike {
 			fork: { start: this.points.head_tube_bottom, end: this.points.front_hub }
 		}
 
-		const create_measurement = (p1: Point, p2: Point): Measurement => ({
-			start: p1,
-			end: p2,
-			length: hyp(p1, p2)
-		})
-
 		this.measurements = {
-			wheelbase: create_measurement(
-				this.points.front_hub,
-				this.points.rear_hub
-			),
-			front_center: create_measurement(
-				this.points.bottom_bracket,
-				this.points.front_hub
-			),
-			stack: create_measurement(
-				this.points.head_tube_top,
-				this.points.bottom_bracket
-			),
-			reach: create_measurement(
-				this.points.bottom_bracket,
-				this.points.head_tube_top
-			),
-			effective_top_tube: create_measurement(
-				ett_point,
-				this.points.head_tube_top
-			)
+			wheel_base: {
+				start: this.points.front_hub,
+				end: this.points.rear_hub,
+				length: this.points.front_hub.x - this.points.rear_hub.x
+			},
+			front_center: {
+				start: this.points.bottom_bracket,
+				end: this.points.front_hub,
+				length: hyp(this.points.bottom_bracket, this.points.front_hub)
+			},
+			stack: {
+				start: this.points.head_tube_top,
+				end: this.points.bottom_bracket,
+				length: this.points.bottom_bracket.y - this.points.head_tube_top.y
+			},
+			reach: {
+				start: this.points.bottom_bracket,
+				end: this.points.head_tube_top,
+				length: this.points.head_tube_top.x - this.points.bottom_bracket.x
+			},
+			effective_top_tube: {
+				start: ett_point,
+				end: this.points.head_tube_top,
+				length: this.points.head_tube_top.x - ett_point.x
+			}
 		}
 	}
 }

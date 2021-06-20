@@ -10,24 +10,26 @@ interface Props {
 
 export const AddBikeForm: React.FC<Props> = ({ add_bike_handler }) => {
 	enum FrontEndCalculation {
+		WHEEL_BASE,
 		EFFECTIVE_TOP_TUBE_LENGTH,
-		STACK_REACH,
-		WHEEL_BASE
+		STACK_REACH
 	}
 
-	const [bike, set_bike] = useState<BikeParameters>({
-		wheel_diameter: 622,
-		bottom_bracket_drop: 70,
-		chain_stay_length: 405,
-		seat_tube_angle: 74.5,
-		seat_tube_length: 450,
-		seat_post_length: 660,
-		head_tube_angle: 71,
-		fork_rake: 50,
-		fork_length: 375,
-		head_tube_length: 135,
+	const [bike_name, set_bike_name] = useState<string>("Bike")
+	const [bike_color, set_bike_color] = useState<string>("red")
+	const [bike_parameters, set_bike_parameters] = useState<BikeParameters>({
+		wheel_diameter: undefined,
+		bottom_bracket_drop: undefined,
+		chain_stay_length: undefined,
+		seat_tube_angle: undefined,
+		seat_tube_length: undefined,
+		seat_post_length: undefined,
+		head_tube_angle: undefined,
+		fork_rake: undefined,
+		fork_length: undefined,
+		head_tube_length: undefined,
 		front: {
-			wheel_base: 997,
+			wheel_base: undefined,
 			effective_top_tube_length: undefined,
 			reach: undefined,
 			stack: undefined
@@ -37,15 +39,15 @@ export const AddBikeForm: React.FC<Props> = ({ add_bike_handler }) => {
 		useState<FrontEndCalculation>(FrontEndCalculation.WHEEL_BASE)
 
 	const set_bike_parameter = (parameter_name: string, value: number) => {
-		const obj = { ...bike }
+		const obj = { ...bike_parameters }
 		obj[parameter_name] = value
-		set_bike(obj)
+		set_bike_parameters(obj)
 	}
 
 	const set_bike_front_parameter = (parameter_name: string, value: number) => {
-		const obj = { ...bike }
+		const obj = { ...bike_parameters }
 
-		if (parameter_name == "wheelbase") {
+		if (parameter_name == "wheel_base") {
 			obj.front = {
 				wheel_base: value,
 				effective_top_tube_length: undefined,
@@ -73,7 +75,9 @@ export const AddBikeForm: React.FC<Props> = ({ add_bike_handler }) => {
 			}
 		}
 
-		set_bike(obj)
+		console.log(obj)
+
+		set_bike_parameters(obj)
 	}
 
 	enum OddOrEven {
@@ -82,7 +86,7 @@ export const AddBikeForm: React.FC<Props> = ({ add_bike_handler }) => {
 	}
 
 	const only_odd_or_even = (odd_or_even: OddOrEven) =>
-		Object.entries(bike)
+		Object.entries(bike_parameters)
 			.filter(
 				([name, param], i) =>
 					i % 2 == (odd_or_even == OddOrEven.EVEN ? 0 : 1) &&
@@ -100,14 +104,28 @@ export const AddBikeForm: React.FC<Props> = ({ add_bike_handler }) => {
 	return (
 		<>
 			<form onSubmit={ev => ev.preventDefault()}>
-				<Grid container spacing={1}>
-					<Grid item xs={6}>
-						{only_odd_or_even(OddOrEven.EVEN)}
+				<TextField
+					label="name"
+					fullWidth
+					value={bike_name}
+					onChange={ev => set_bike_name(ev.target.value)}
+				></TextField>
+				<TextField
+					label="color"
+					fullWidth
+					value={bike_color}
+					onChange={ev => set_bike_color(ev.target.value)}
+				></TextField>
+				<Box mt={1}>
+					<Grid container spacing={1}>
+						<Grid item xs={6}>
+							{only_odd_or_even(OddOrEven.EVEN)}
+						</Grid>
+						<Grid item xs={6}>
+							{only_odd_or_even(OddOrEven.ODD)}
+						</Grid>
 					</Grid>
-					<Grid item xs={6}>
-						{only_odd_or_even(OddOrEven.ODD)}
-					</Grid>
-				</Grid>
+				</Box>
 				<Box mt={1}>
 					<TextField
 						label="front end measurement"
@@ -129,7 +147,7 @@ export const AddBikeForm: React.FC<Props> = ({ add_bike_handler }) => {
 					{front_end_calculation == FrontEndCalculation.WHEEL_BASE && (
 						<ParameterInput
 							name="wheel_base"
-							value={bike.front.wheel_base}
+							value={bike_parameters.front.wheel_base}
 							setter={set_bike_front_parameter}
 						></ParameterInput>
 					)}
@@ -137,7 +155,7 @@ export const AddBikeForm: React.FC<Props> = ({ add_bike_handler }) => {
 						FrontEndCalculation.EFFECTIVE_TOP_TUBE_LENGTH && (
 						<ParameterInput
 							name="effective_top_tube_length"
-							value={bike.front.effective_top_tube_length}
+							value={bike_parameters.front.effective_top_tube_length}
 							setter={set_bike_front_parameter}
 						></ParameterInput>
 					)}
@@ -145,12 +163,12 @@ export const AddBikeForm: React.FC<Props> = ({ add_bike_handler }) => {
 						<>
 							<ParameterInput
 								name="stack"
-								value={bike.front.stack}
+								value={bike_parameters.front.stack}
 								setter={set_bike_front_parameter}
 							></ParameterInput>
 							<ParameterInput
 								name="reach"
-								value={bike.front.reach}
+								value={bike_parameters.front.reach}
 								setter={set_bike_front_parameter}
 							></ParameterInput>
 						</>
@@ -161,7 +179,9 @@ export const AddBikeForm: React.FC<Props> = ({ add_bike_handler }) => {
 						variant="contained"
 						color="primary"
 						fullWidth
-						onClick={() => add_bike_handler(new Bike(bike))}
+						onClick={() =>
+							add_bike_handler(new Bike(bike_name, bike_color, bike_parameters))
+						}
 					>
 						Add Bike
 					</Button>

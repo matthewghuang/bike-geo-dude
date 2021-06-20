@@ -11,6 +11,7 @@ import {
 	createMuiTheme
 } from "@material-ui/core"
 import { AddBikeForm } from "./AddBikeForm"
+import { BikesDisplay } from "./BikesDisplay"
 
 const theme = responsiveFontSizes(
 	createMuiTheme({
@@ -40,6 +41,10 @@ export const App: React.FC = () => {
 		set_adding_bike(false)
 	}
 
+	const remove_bike = (index: number) => {
+		set_bikes(bikes.filter((_, i) => i != index))
+	}
+
 	useEffect(() => {
 		const bbox = svg.current.getBBox()
 
@@ -54,7 +59,7 @@ export const App: React.FC = () => {
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
 			<Box height="100vh" display="flex">
-				<Box width="25%">
+				<Box width="25%" style={{ maxHeight: "100%", overflow: "auto" }}>
 					<Box p={1} bgcolor="orange" color="white" fontSize="h4.fontSize">
 						Bike Geo Dude
 					</Box>
@@ -88,6 +93,15 @@ export const App: React.FC = () => {
 							</>
 						)}
 					</Box>
+
+					<Divider orientation="horizontal"></Divider>
+
+					<Box p={1}>
+						<BikesDisplay
+							bikes={bikes}
+							delete_handler={remove_bike}
+						></BikesDisplay>
+					</Box>
 				</Box>
 
 				<Divider orientation="vertical"></Divider>
@@ -97,7 +111,7 @@ export const App: React.FC = () => {
 						<BikeRender
 							key={i}
 							bike={bike}
-							color="red"
+							color={bike.color}
 							offset={bike.offset}
 						></BikeRender>
 					))}
