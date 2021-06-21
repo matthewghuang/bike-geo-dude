@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { Bike } from "../types/bike"
 import { Button, Box, Grid, TextField, MenuItem } from "@material-ui/core"
 import { BikeParameters } from "../types/bike"
@@ -53,7 +53,7 @@ export const AddBikeForm: React.FC<{
 	cancel_handler: () => void
 }> = props => {
 	return (
-		<>
+		<Fragment>
 			<Box mb={1}>
 				<AddBikeButton
 					name={props.name}
@@ -93,6 +93,6 @@ export const AddBikeForm: React.FC<{
 					/>
 				))}
 			</Grid>
-		</>
+		</Fragment>
 	)
 }

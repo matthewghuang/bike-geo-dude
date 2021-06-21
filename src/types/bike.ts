@@ -1,6 +1,5 @@
 import { Point } from "./point"
 import { Tube } from "./tube"
-import { Measurement } from "./measurement"
 
 const dtr = (degrees: number): number => degrees * (Math.PI / 180)
 
@@ -43,11 +42,11 @@ interface Tubes {
 }
 
 interface Measurements {
-	wheel_base: Measurement
-	front_center: Measurement
-	stack: Measurement
-	reach: Measurement
-	effective_top_tube: Measurement
+	wheel_base: number
+	front_center: number
+	stack: number
+	reach: number
+	effective_top_tube: number
 }
 
 export class Bike {
@@ -196,31 +195,11 @@ export class Bike {
 		}
 
 		this.measurements = {
-			wheel_base: {
-				start: this.points.front_hub,
-				end: this.points.rear_hub,
-				length: this.points.front_hub.x - this.points.rear_hub.x
-			},
-			front_center: {
-				start: this.points.bottom_bracket,
-				end: this.points.front_hub,
-				length: hyp(this.points.bottom_bracket, this.points.front_hub)
-			},
-			stack: {
-				start: this.points.head_tube_top,
-				end: this.points.bottom_bracket,
-				length: this.points.bottom_bracket.y - this.points.head_tube_top.y
-			},
-			reach: {
-				start: this.points.bottom_bracket,
-				end: this.points.head_tube_top,
-				length: this.points.head_tube_top.x - this.points.bottom_bracket.x
-			},
-			effective_top_tube: {
-				start: ett_point,
-				end: this.points.head_tube_top,
-				length: this.points.head_tube_top.x - ett_point.x
-			}
+			wheel_base: this.points.front_hub.x - this.points.rear_hub.x,
+			front_center: hyp(this.points.bottom_bracket, this.points.front_hub),
+			stack: this.points.bottom_bracket.y - this.points.head_tube_top.y,
+			reach: this.points.head_tube_top.x - this.points.bottom_bracket.x,
+			effective_top_tube: this.points.head_tube_top.x - ett_point.x
 		}
 	}
 }

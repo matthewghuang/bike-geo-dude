@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import { Bike, BikeParameters } from "../types/bike"
-import { BikeRender } from "./BikeRender"
+import { BikesSVG } from "./BikesSVG"
 import {
 	Button,
 	Box,
@@ -191,12 +191,7 @@ export const App: React.FC = () => {
 				<Divider orientation="vertical"></Divider>
 
 				<svg width="100%" height="100%" viewBox={view_box} ref={svg}>
-					{Object.values(bikes)
-						.reverse()
-						.filter(bike => !bike.hidden)
-						.map((bike, i) => (
-							<BikeRender key={i} bike={bike} color={bike.color}></BikeRender>
-						))}
+					<BikesSVG bikes={bikes}></BikesSVG>
 				</svg>
 			</Box>
 		</ThemeProvider>
