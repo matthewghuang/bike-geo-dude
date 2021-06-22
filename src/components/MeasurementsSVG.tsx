@@ -123,8 +123,8 @@ const Trail: React.FC<{ bike: Bike }> = ({ bike }) => {
 	return (
 		<Fragment>
 			<line
-				x1={bike.points.rake_point.x}
-				y1={bike.points.rake_point.y}
+				x1={bike.points.head_tube_top.x}
+				y1={bike.points.head_tube_top.y}
 				x2={bike.points.trail_point.x}
 				y2={bike.points.trail_point.y}
 				stroke="grey"

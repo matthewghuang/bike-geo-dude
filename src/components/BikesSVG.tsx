@@ -26,15 +26,7 @@ const WheelSVG: React.FC<{ bike: Bike }> = ({ bike }) => {
 				cy={bike.points.front_hub.y}
 				r={bike.parameters.wheel_diameter / 2 + bike.parameters.tire_width / 2}
 				fill="none"
-				stroke="grey"
-				strokeDasharray="4"
-			/>
-			<circle
-				cx={bike.points.front_hub.x}
-				cy={bike.points.front_hub.y}
-				r={bike.parameters.wheel_diameter / 2}
-				fill="none"
-				stroke="grey"
+				stroke={bike.color}
 				strokeDasharray="4"
 			/>
 			<circle
@@ -42,15 +34,7 @@ const WheelSVG: React.FC<{ bike: Bike }> = ({ bike }) => {
 				cy={bike.points.rear_hub.y}
 				r={bike.parameters.wheel_diameter / 2 + bike.parameters.tire_width / 2}
 				fill="none"
-				stroke="grey"
-				strokeDasharray="4"
-			/>
-			<circle
-				cx={bike.points.rear_hub.x}
-				cy={bike.points.rear_hub.y}
-				r={bike.parameters.wheel_diameter / 2}
-				fill="none"
-				stroke="grey"
+				stroke={bike.color}
 				strokeDasharray="4"
 			/>
 		</Fragment>
