@@ -1,17 +1,27 @@
 import React, { useCallback } from "react"
-import { Bike } from "../types/bike"
-import { Box, Paper, Button } from "@material-ui/core"
+import { Bike, BikeParameters } from "../types/bike"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
+import { BikeDisplay } from "./BikeDisplay"
 
 export const BikesDisplay: React.FC<{
 	bikes: Bike[]
-	edit_handler: (index: number) => void
-	delete_handler: (index: number) => void
-	hidden_handler: (index: number) => void
-	on_drag_end: (result: any) => void
-}> = ({ bikes, edit_handler, delete_handler, hidden_handler, on_drag_end }) => {
+	edit_bike_name: (index: number, name: string) => void
+	edit_bike_color: (index: number, color: string) => void
+	edit_bike_parameters: (index: number, parameters: BikeParameters) => void
+	delete_bike: (index: number) => void
+	hide_bike: (index: number) => void
+	drag_end: (result: any) => void
+}> = ({
+	bikes,
+	edit_bike_name,
+	edit_bike_color,
+	edit_bike_parameters,
+	drag_end,
+	delete_bike,
+	hide_bike
+}) => {
 	return (
-		<DragDropContext onDragEnd={on_drag_end}>
+		<DragDropContext onDragEnd={drag_end}>
 			<Droppable droppableId="bike-list">
 				{(provided, snapshot) => (
 					<div {...provided.droppableProps} ref={provided.innerRef}>
@@ -23,42 +33,20 @@ export const BikesDisplay: React.FC<{
 										{...provided.draggableProps}
 										{...provided.dragHandleProps}
 									>
-										<Box component={Paper} mb={1}>
-											<Box
-												p={1}
-												display="flex"
-												style={{ alignItems: "center" }}
-											>
-												<Box
-													component={!bike.hidden && Paper}
-													color={bike.hidden ? "black" : "white"}
-													bgcolor={!bike.hidden && bike.color}
-													p={1}
-													onClick={() => hidden_handler(i)}
-												>
-													{bike.name}
-												</Box>
-												<Box ml="auto">
-													<Box mr={1} display="inline">
-														<Button
-															variant="outlined"
-															color="secondary"
-															onClick={() => edit_handler(i)}
-														>
-															Edit
-														</Button>
-													</Box>
-
-													<Button
-														variant="outlined"
-														color="secondary"
-														onClick={() => delete_handler(i)}
-													>
-														Delete
-													</Button>
-												</Box>
-											</Box>
-										</Box>
+										<BikeDisplay
+											bike={bike}
+											set_name={name => {
+												edit_bike_name(i, name)
+											}}
+											set_color={color => {
+												edit_bike_color(i, color)
+											}}
+											set_parameters={parameters => {
+												edit_bike_parameters(i, parameters)
+											}}
+											delete_bike={() => delete_bike(i)}
+											hide_bike={() => hide_bike(i)}
+										/>
 									</div>
 								)}
 							</Draggable>

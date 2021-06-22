@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef, Fragment } from "react"
 import { Bike, BikeParameters } from "../types/bike"
 import { BikesSVG } from "./BikesSVG"
 import {
@@ -10,7 +10,7 @@ import {
 	responsiveFontSizes,
 	createMuiTheme
 } from "@material-ui/core"
-import { AddBikeForm } from "./AddBikeForm"
+import { BikeParameterForm } from "./BikeParameterForm"
 import { BikesDisplay } from "./BikesDisplay"
 import localforage from "localforage"
 
@@ -58,28 +58,36 @@ export const App: React.FC = () => {
 			tire_width: 25
 		})
 
-	const add_bike = (bike: Bike) => {
-		const new_bike = { ...bike }
-
-		set_bikes([...bikes, new_bike])
+	const add_bike = () => {
+		set_bikes([
+			...bikes,
+			new Bike(new_bike_name, new_bike_color, new_bike_parameters)
+		])
 
 		set_adding_bike(false)
 	}
 
-	const cancel_add_bike = () => {
-		set_adding_bike(false)
+	const edit_bike_name = (index: number, name: string) => {
+		const new_bikes = [...bikes]
+		new_bikes[index].name = name
+		set_bikes(new_bikes)
 	}
 
-	const edit_bike = (index: number) => {
-		const { name, color, parameters } = bikes[index] as Bike
-		set_new_bike_name(name)
-		set_new_bike_color(color)
-		set_new_bike_parameters(parameters)
-		remove_bike(index)
-		set_adding_bike(true)
+	const edit_bike_color = (index: number, color: string) => {
+		const new_bikes = [...bikes]
+		new_bikes[index].color = color
+		set_bikes(new_bikes)
 	}
 
-	const remove_bike = (index: number) => {
+	const edit_bike_parameters = (index: number, parameters: BikeParameters) => {
+		const new_bikes = [...bikes]
+		const name = new_bikes[index].name
+		const color = new_bikes[index].color
+		new_bikes[index] = new Bike(name, color, parameters)
+		set_bikes(new_bikes)
+	}
+
+	const delete_bike = (index: number) => {
 		set_bikes(bikes.filter((_, i) => i != index))
 	}
 
@@ -164,16 +172,36 @@ export const App: React.FC = () => {
 							</Button>
 						)}
 						{adding_bike && (
-							<AddBikeForm
-								name={new_bike_name}
-								color={new_bike_color}
-								parameters={new_bike_parameters}
-								set_name={set_new_bike_name}
-								set_color={set_new_bike_color}
-								set_parameters={set_new_bike_parameters}
-								add_bike_handler={add_bike}
-								cancel_handler={cancel_add_bike}
-							/>
+							<Fragment>
+								<Box mb={1}>
+									<Button
+										variant="contained"
+										color="primary"
+										fullWidth
+										onClick={() => add_bike()}
+									>
+										Add Bike
+									</Button>
+								</Box>
+								<Box mb={1}>
+									<Button
+										variant="contained"
+										color="secondary"
+										fullWidth
+										onClick={() => set_adding_bike(false)}
+									>
+										Cancel
+									</Button>
+								</Box>
+								<BikeParameterForm
+									name={new_bike_name}
+									color={new_bike_color}
+									parameters={new_bike_parameters}
+									set_name={set_new_bike_name}
+									set_color={set_new_bike_color}
+									set_parameters={set_new_bike_parameters}
+								/>
+							</Fragment>
 						)}
 					</Box>
 
@@ -182,10 +210,12 @@ export const App: React.FC = () => {
 					<Box p={1}>
 						<BikesDisplay
 							bikes={bikes}
-							edit_handler={edit_bike}
-							delete_handler={remove_bike}
-							on_drag_end={on_drag_end}
-							hidden_handler={hide_bike}
+							drag_end={on_drag_end}
+							edit_bike_name={edit_bike_name}
+							edit_bike_color={edit_bike_color}
+							edit_bike_parameters={edit_bike_parameters}
+							delete_bike={delete_bike}
+							hide_bike={hide_bike}
 						></BikesDisplay>
 					</Box>
 				</Box>
