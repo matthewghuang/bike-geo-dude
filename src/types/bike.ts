@@ -1,6 +1,3 @@
-import { Point } from "./point"
-import { Tube } from "./tube"
-
 const dtr = (degrees: number): number => degrees * (Math.PI / 180)
 
 const hyp = (p1: Point, p2: Point): number =>
@@ -21,6 +18,22 @@ export interface BikeParameters {
 	reach: number
 }
 
+interface Point {
+	x: number
+	y: number
+}
+
+interface Measurement {
+	name: string
+	length: number
+}
+
+interface Tube {
+	name: string
+	start: Point
+	end: Point
+}
+
 interface Points {
 	rear_hub: Point
 	bottom_bracket: Point
@@ -29,6 +42,7 @@ interface Points {
 	front_hub: Point
 	head_tube_bottom: Point
 	head_tube_top: Point
+	ett_point: Point
 }
 
 interface Tubes {
@@ -42,11 +56,11 @@ interface Tubes {
 }
 
 interface Measurements {
-	wheel_base: number
-	front_center: number
-	stack: number
-	reach: number
-	effective_top_tube: number
+	wheel_base: Measurement
+	front_center: Measurement
+	stack: Measurement
+	reach: Measurement
+	effective_top_tube: Measurement
 }
 
 export class Bike {
@@ -161,45 +175,70 @@ export class Bike {
 		const diff_y =
 			this.points.seat_tube_junction.y - this.points.head_tube_top.y
 		const ett_x = this.points.seat_tube_junction.x - diff_y / tan_sta
-		const ett_point = {
-			x: this.points.head_tube_top.x - ett_x,
+		this.points.ett_point = {
+			x: ett_x,
 			y: this.points.seat_tube_junction.y - diff_y
 		}
 
 		this.tubes = {
 			chain_stay: {
+				name: "Chain Stay",
 				start: this.points.rear_hub,
 				end: this.points.bottom_bracket
 			},
 			seat_stay: {
+				name: "Seat Stay",
 				start: this.points.rear_hub,
 				end: this.points.seat_tube_junction
 			},
 			seat_tube: {
+				name: "Seat Tube",
 				start: this.points.bottom_bracket,
 				end: this.points.seat_tube_junction
 			},
 			down_tube: {
+				name: "Down Tube",
 				start: this.points.bottom_bracket,
 				end: this.points.head_tube_bottom
 			},
 			top_tube: {
+				name: "Top Tube",
 				start: this.points.seat_tube_junction,
 				end: this.points.head_tube_top
 			},
 			head_tube: {
+				name: "Head Tube",
 				start: this.points.head_tube_top,
 				end: this.points.head_tube_bottom
 			},
-			fork: { start: this.points.head_tube_bottom, end: this.points.front_hub }
+			fork: {
+				name: "Fork",
+				start: this.points.head_tube_bottom,
+				end: this.points.front_hub
+			}
 		}
 
 		this.measurements = {
-			wheel_base: this.points.front_hub.x - this.points.rear_hub.x,
-			front_center: hyp(this.points.bottom_bracket, this.points.front_hub),
-			stack: this.points.bottom_bracket.y - this.points.head_tube_top.y,
-			reach: this.points.head_tube_top.x - this.points.bottom_bracket.x,
-			effective_top_tube: this.points.head_tube_top.x - ett_point.x
+			wheel_base: {
+				name: "Wheel Base",
+				length: this.points.front_hub.x - this.points.rear_hub.x
+			},
+			front_center: {
+				name: "Front Center",
+				length: hyp(this.points.bottom_bracket, this.points.front_hub)
+			},
+			stack: {
+				name: "Stack",
+				length: this.points.bottom_bracket.y - this.points.head_tube_top.y
+			},
+			reach: {
+				name: "Reach",
+				length: this.points.head_tube_top.x - this.points.bottom_bracket.x
+			},
+			effective_top_tube: {
+				name: "Effective Top Tube",
+				length: this.points.head_tube_top.x - this.points.ett_point.x
+			}
 		}
 	}
 }

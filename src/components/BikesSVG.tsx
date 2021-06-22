@@ -1,48 +1,42 @@
 import React, { Fragment } from "react"
 import { Bike } from "../types/bike"
-import { Point } from "../types/point"
-import { Tube } from "../types/tube"
 import { MeasurementsSVG } from "./MeasurementsSVG"
 
-const PointSVG: React.FC<{ point: Point; color: string }> = props => {
+const TubeSVG: React.FC<{
+	x1: number
+	y1: number
+	x2: number
+	y2: number
+	color: string
+}> = ({ x1, y1, x2, y2, color }) => {
 	return (
-		<circle
-			cx={props.point.x}
-			cy={props.point.y}
-			r="10"
-			fill={props.color}
-		></circle>
-	)
-}
-
-const TubeSVG: React.FC<{ tube: Tube; color: string }> = ({ tube, color }) => {
-	return (
-		<line
-			x1={tube.start.x}
-			y1={tube.start.y}
-			x2={tube.end.x}
-			y2={tube.end.y}
-			stroke={color}
-			style={{ strokeWidth: 20 }}
-		></line>
+		<Fragment>
+			<line x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth="20" />
+			<circle cx={x1} cy={y1} r="10" fill={color}></circle>
+			<circle cx={x2} cy={y2} r="10" fill={color}></circle>
+		</Fragment>
 	)
 }
 
 export const BikesSVG: React.FC<{ bikes: Bike[] }> = ({ bikes }) => {
 	return (
 		<Fragment>
-			{Object.values(bikes)
+			{bikes
+				.slice()
 				.reverse()
 				.filter(bike => !bike.hidden)
 				.map((bike, i, arr) => (
 					<Fragment>
 						<g style={{ opacity: 0.8 }}>
-							{Object.entries(bike.tubes).map(([name, tube], i) => (
-								<TubeSVG key={i} tube={tube} color={bike.color}></TubeSVG>
-							))}
-
-							{Object.entries(bike.points).map(([name, pt], i) => (
-								<PointSVG key={i} point={pt} color={bike.color}></PointSVG>
+							{Object.values(bike.tubes).map((tube, i) => (
+								<TubeSVG
+									key={i}
+									x1={tube.start.x}
+									y1={tube.start.y}
+									x2={tube.end.x}
+									y2={tube.end.y}
+									color={bike.color}
+								></TubeSVG>
 							))}
 						</g>
 						{i == arr.length - 1 && <MeasurementsSVG bike={bike} />}
