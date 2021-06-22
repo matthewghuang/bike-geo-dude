@@ -53,7 +53,9 @@ export const App: React.FC = () => {
 			wheel_base: undefined,
 			stack: undefined,
 			reach: undefined,
-			fork_length: 375
+			fork_length: 375,
+			wheel_diameter: 622,
+			tire_width: 25
 		})
 
 	const add_bike = (bike: Bike) => {

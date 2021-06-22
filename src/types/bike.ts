@@ -16,6 +16,8 @@ export interface BikeParameters {
 	effective_top_tube_length: number
 	stack: number
 	reach: number
+	wheel_diameter: number
+	tire_width: number
 }
 
 interface Point {
@@ -43,6 +45,8 @@ interface Points {
 	head_tube_bottom: Point
 	head_tube_top: Point
 	ett_point: Point
+	rake_point: Point
+	trail_point: Point
 }
 
 interface Tubes {
@@ -61,6 +65,7 @@ interface Measurements {
 	stack: Measurement
 	reach: Measurement
 	effective_top_tube: Measurement
+	trail: Measurement
 }
 
 export class Bike {
@@ -113,14 +118,14 @@ export class Bike {
 				y: this.points.rear_hub.y
 			}
 
-			const rake_point = {
+			this.points.rake_point = {
 				x: this.points.front_hub.x - parameters.fork_rake * sin_hta,
 				y: this.points.front_hub.y + parameters.fork_rake * cos_hta
 			}
 
 			this.points.head_tube_bottom = {
-				x: rake_point.x - parameters.fork_length * cos_hta,
-				y: rake_point.y - parameters.fork_length * sin_hta
+				x: this.points.rake_point.x - parameters.fork_length * cos_hta,
+				y: this.points.rake_point.y - parameters.fork_length * sin_hta
 			}
 
 			this.points.head_tube_top = {
@@ -145,13 +150,13 @@ export class Bike {
 				x: this.points.head_tube_top.x + parameters.head_tube_length * cos_hta,
 				y: this.points.head_tube_top.y + parameters.head_tube_length * sin_hta
 			}
-			const rake_point = {
+			this.points.rake_point = {
 				x: this.points.head_tube_bottom.x + parameters.fork_length * cos_hta,
 				y: this.points.head_tube_bottom.y + parameters.fork_length * sin_hta
 			}
 			this.points.front_hub = {
-				x: rake_point.x + parameters.fork_rake * sin_hta,
-				y: rake_point.y - parameters.fork_rake * cos_hta
+				x: this.points.rake_point.x + parameters.fork_rake * sin_hta,
+				y: this.points.rake_point.y - parameters.fork_rake * cos_hta
 			}
 		} else if (parameters.stack != undefined && parameters.reach != undefined) {
 			this.points.head_tube_top = {
@@ -162,13 +167,13 @@ export class Bike {
 				x: this.points.head_tube_top.x + parameters.head_tube_length * cos_hta,
 				y: this.points.head_tube_top.y + parameters.head_tube_length * sin_hta
 			}
-			const rake_point = {
+			this.points.rake_point = {
 				x: this.points.head_tube_bottom.x + parameters.fork_length * cos_hta,
 				y: this.points.head_tube_bottom.y + parameters.fork_length * sin_hta
 			}
 			this.points.front_hub = {
-				x: rake_point.x + parameters.fork_rake * sin_hta,
-				y: rake_point.y - parameters.fork_rake * cos_hta
+				x: this.points.rake_point.x + parameters.fork_rake * sin_hta,
+				y: this.points.rake_point.y - parameters.fork_rake * cos_hta
 			}
 		}
 
@@ -218,6 +223,19 @@ export class Bike {
 			}
 		}
 
+		const ground =
+			this.points.front_hub.y +
+			this.parameters.wheel_diameter / 2 +
+			this.parameters.tire_width / 2
+		const rake_to_ground = ground - this.points.rake_point.y
+		this.points.trail_point = {
+			x:
+				this.points.rake_point.x +
+				rake_to_ground / Math.tan(dtr(this.parameters.head_tube_angle)),
+			y: ground
+		}
+		const trail = this.points.trail_point.x - this.points.front_hub.x
+
 		this.measurements = {
 			wheel_base: {
 				name: "Wheel Base",
@@ -238,6 +256,10 @@ export class Bike {
 			effective_top_tube: {
 				name: "Effective Top Tube",
 				length: this.points.head_tube_top.x - this.points.ett_point.x
+			},
+			trail: {
+				name: "Trail",
+				length: trail
 			}
 		}
 	}

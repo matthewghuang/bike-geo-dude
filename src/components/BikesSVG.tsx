@@ -18,6 +18,45 @@ const TubeSVG: React.FC<{
 	)
 }
 
+const WheelSVG: React.FC<{ bike: Bike }> = ({ bike }) => {
+	return (
+		<Fragment>
+			<circle
+				cx={bike.points.front_hub.x}
+				cy={bike.points.front_hub.y}
+				r={bike.parameters.wheel_diameter / 2 + bike.parameters.tire_width / 2}
+				fill="none"
+				stroke="grey"
+				strokeDasharray="4"
+			/>
+			<circle
+				cx={bike.points.front_hub.x}
+				cy={bike.points.front_hub.y}
+				r={bike.parameters.wheel_diameter / 2}
+				fill="none"
+				stroke="grey"
+				strokeDasharray="4"
+			/>
+			<circle
+				cx={bike.points.rear_hub.x}
+				cy={bike.points.rear_hub.y}
+				r={bike.parameters.wheel_diameter / 2 + bike.parameters.tire_width / 2}
+				fill="none"
+				stroke="grey"
+				strokeDasharray="4"
+			/>
+			<circle
+				cx={bike.points.rear_hub.x}
+				cy={bike.points.rear_hub.y}
+				r={bike.parameters.wheel_diameter / 2}
+				fill="none"
+				stroke="grey"
+				strokeDasharray="4"
+			/>
+		</Fragment>
+	)
+}
+
 export const BikesSVG: React.FC<{ bikes: Bike[] }> = ({ bikes }) => {
 	return (
 		<Fragment>
@@ -28,6 +67,7 @@ export const BikesSVG: React.FC<{ bikes: Bike[] }> = ({ bikes }) => {
 				.map((bike, i, arr) => (
 					<Fragment>
 						<g style={{ opacity: 0.8 }}>
+							<WheelSVG bike={bike} />
 							{Object.values(bike.tubes).map((tube, i) => (
 								<TubeSVG
 									key={i}
@@ -36,7 +76,7 @@ export const BikesSVG: React.FC<{ bikes: Bike[] }> = ({ bikes }) => {
 									x2={tube.end.x}
 									y2={tube.end.y}
 									color={bike.color}
-								></TubeSVG>
+								/>
 							))}
 						</g>
 						{i == arr.length - 1 && <MeasurementsSVG bike={bike} />}
