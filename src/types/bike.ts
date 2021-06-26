@@ -183,8 +183,12 @@ export class Bike {
 		}
 
 		this.points.stem_start = {
-			x: this.points.head_tube_top.x - cos_hta * (parameters.spacers + 20),
-			y: this.points.head_tube_top.y - sin_hta * (parameters.spacers + 20)
+			x:
+				this.points.head_tube_top.x -
+				cos_hta * (parameters.spacers ? parameters.spacers + 20 : 20),
+			y:
+				this.points.head_tube_top.y -
+				sin_hta * (parameters.spacers ? parameters.spacers + 20 : 20)
 		}
 
 		this.points.stem_end = {
