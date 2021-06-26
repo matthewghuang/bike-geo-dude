@@ -72,7 +72,7 @@ const StemSVG: React.FC<{ bike: Bike }> = ({ bike }) => {
 				cx={bike.points.stem_end.x}
 				cy={bike.points.stem_end.y}
 				r={31.8 / 2}
-				fill="none"
+				fill="white"
 				stroke={bike.color}
 			/>
 		</Fragment>
