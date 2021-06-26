@@ -85,6 +85,18 @@ export class Bike {
         y: this.points.rake_point.y - parameters.fork_rake * cos_hta
       };
     }
+    this.points.stem_start = {
+      x: this.points.head_tube_top.x - cos_hta * (parameters.spacers ? parameters.spacers + 20 : 20),
+      y: this.points.head_tube_top.y - sin_hta * (parameters.spacers ? parameters.spacers + 20 : 20)
+    };
+    this.points.stem_end = {
+      x: this.points.stem_start.x + Math.sin(dtr(parameters.head_tube_angle - parameters.stem_angle)) * parameters.stem_length,
+      y: this.points.stem_start.y - Math.cos(dtr(parameters.head_tube_angle - parameters.stem_angle)) * parameters.stem_length
+    };
+    this.points.seat_post_top = {
+      x: this.points.seat_tube_junction.x - cos_sta * (parameters.saddle_height - parameters.seat_tube_length),
+      y: this.points.seat_tube_junction.y - sin_sta * (parameters.saddle_height - parameters.seat_tube_length)
+    };
     const diff_y = this.points.seat_tube_junction.y - this.points.head_tube_top.y;
     const ett_x = this.points.seat_tube_junction.x - diff_y / tan_sta;
     this.points.ett_point = {
@@ -126,6 +138,11 @@ export class Bike {
         name: "Fork",
         start: this.points.head_tube_bottom,
         end: this.points.front_hub
+      },
+      seat_post: {
+        name: "Seat Post",
+        start: this.points.seat_post_top,
+        end: this.points.seat_tube_junction
       }
     };
     const ground = this.points.front_hub.y + this.parameters.wheel_diameter / 2 + this.parameters.tire_width / 2;

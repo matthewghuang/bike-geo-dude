@@ -46,7 +46,11 @@ export const App = () => {
     reach: void 0,
     fork_length: 375,
     wheel_diameter: 622,
-    tire_width: 25
+    tire_width: 25,
+    stem_length: 90,
+    stem_angle: -7,
+    spacers: 20,
+    saddle_height: 700
   });
   const add_bike = () => {
     set_bikes([
@@ -93,24 +97,14 @@ export const App = () => {
   useEffect(() => {
     const save_data = async () => {
       await localforage.setItem("bikes", bikes);
-      await localforage.setItem("new_bike_name", new_bike_name);
-      await localforage.setItem("new_bike_color", new_bike_color);
-      await localforage.setItem("new_bike_parameters", new_bike_parameters);
     };
     save_data();
-  }, [bikes, new_bike_name, new_bike_color, new_bike_parameters]);
+  }, [bikes]);
   useEffect(() => {
     const sync_data = async () => {
       const bikes2 = await localforage.getItem("bikes");
-      if (bikes2) {
-        const saved_new_bike_name = await localforage.getItem("new_bike_name");
-        const saved_new_bike_color = await localforage.getItem("new_bike_color");
-        const saved_new_bike_parameters = await localforage.getItem("new_bike_parameters");
+      if (bikes2)
         set_bikes(bikes2);
-        set_new_bike_name(saved_new_bike_name);
-        set_new_bike_color(saved_new_bike_color);
-        set_new_bike_parameters(saved_new_bike_parameters);
-      }
     };
     sync_data();
   }, []);
