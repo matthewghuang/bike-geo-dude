@@ -20,6 +20,7 @@ export interface BikeParameters {
 	tire_width: number
 	stem_length: number
 	stem_angle: number
+	spacers: number
 }
 
 interface Point {
@@ -49,6 +50,8 @@ interface Points {
 	ett_point: Point
 	rake_point: Point
 	trail_point: Point
+	stem_start: Point
+	stem_end: Point
 }
 
 interface Tubes {
@@ -177,6 +180,22 @@ export class Bike {
 				x: this.points.rake_point.x + parameters.fork_rake * sin_hta,
 				y: this.points.rake_point.y - parameters.fork_rake * cos_hta
 			}
+		}
+
+		this.points.stem_start = {
+			x: this.points.head_tube_top.x - cos_hta * (parameters.spacers + 20),
+			y: this.points.head_tube_top.y - sin_hta * (parameters.spacers + 20)
+		}
+
+		this.points.stem_end = {
+			x:
+				this.points.stem_start.x +
+				Math.sin(dtr(parameters.head_tube_angle - parameters.stem_angle)) *
+					parameters.stem_length,
+			y:
+				this.points.stem_start.y -
+				Math.cos(dtr(parameters.head_tube_angle - parameters.stem_angle)) *
+					parameters.stem_length
 		}
 
 		const diff_y =
