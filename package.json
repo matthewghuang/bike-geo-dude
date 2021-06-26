@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "snowpack build",
+    "build": "snowpack build && touch build/.nojekyll",
     "dev": "snowpack dev"
   },
   "dependencies": {
