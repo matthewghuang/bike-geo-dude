@@ -18,6 +18,8 @@ export interface BikeParameters {
 	reach: number
 	wheel_diameter: number
 	tire_width: number
+	stem_length: number
+	stem_angle: number
 }
 
 interface Point {

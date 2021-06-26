@@ -55,7 +55,9 @@ export const App: React.FC = () => {
 			reach: undefined,
 			fork_length: 375,
 			wheel_diameter: 622,
-			tire_width: 25
+			tire_width: 25,
+			stem_length: 90,
+			stem_angle: -7
 		})
 
 	const add_bike = () => {
@@ -118,32 +120,16 @@ export const App: React.FC = () => {
 	useEffect(() => {
 		const save_data = async () => {
 			await localforage.setItem("bikes", bikes)
-			await localforage.setItem("new_bike_name", new_bike_name)
-			await localforage.setItem("new_bike_color", new_bike_color)
-			await localforage.setItem("new_bike_parameters", new_bike_parameters)
 		}
 
 		save_data()
-	}, [bikes, new_bike_name, new_bike_color, new_bike_parameters])
+	}, [bikes])
 
 	useEffect(() => {
 		const sync_data = async () => {
 			const bikes = await localforage.getItem<Bike[]>("bikes")
 
-			if (bikes) {
-				const saved_new_bike_name = await localforage.getItem<string>(
-					"new_bike_name"
-				)
-				const saved_new_bike_color = await localforage.getItem<string>(
-					"new_bike_color"
-				)
-				const saved_new_bike_parameters =
-					await localforage.getItem<BikeParameters>("new_bike_parameters")
-				set_bikes(bikes)
-				set_new_bike_name(saved_new_bike_name)
-				set_new_bike_color(saved_new_bike_color)
-				set_new_bike_parameters(saved_new_bike_parameters)
-			}
+			if (bikes) set_bikes(bikes)
 		}
 
 		sync_data()
