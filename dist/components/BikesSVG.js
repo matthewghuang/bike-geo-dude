@@ -49,7 +49,7 @@ const StemSVG = ({bike}) => {
     cx: bike.points.stem_end.x,
     cy: bike.points.stem_end.y,
     r: 31.8 / 2,
-    fill: "white",
+    fill: "none",
     stroke: bike.color
   }));
 };
