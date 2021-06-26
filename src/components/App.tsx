@@ -58,7 +58,8 @@ export const App: React.FC = () => {
 			tire_width: 25,
 			stem_length: 90,
 			stem_angle: -7,
-			spacers: 20
+			spacers: 20,
+			saddle_height: 700
 		})
 
 	const add_bike = () => {

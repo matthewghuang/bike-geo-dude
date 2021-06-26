@@ -21,6 +21,7 @@ export interface BikeParameters {
 	stem_length: number
 	stem_angle: number
 	spacers: number
+	saddle_height: number
 }
 
 interface Point {
@@ -62,6 +63,7 @@ interface Tubes {
 	top_tube: Tube
 	head_tube: Tube
 	fork: Tube
+	seat_post: Tube
 }
 
 interface Measurements {
@@ -202,6 +204,15 @@ export class Bike {
 					parameters.stem_length
 		}
 
+		this.points.seat_post_top = {
+			x:
+				this.points.seat_tube_junction.x -
+				cos_sta * (parameters.saddle_height - parameters.seat_tube_length),
+			y:
+				this.points.seat_tube_junction.y -
+				sin_sta * (parameters.saddle_height - parameters.seat_tube_length)
+		}
+
 		const diff_y =
 			this.points.seat_tube_junction.y - this.points.head_tube_top.y
 		const ett_x = this.points.seat_tube_junction.x - diff_y / tan_sta
@@ -245,6 +256,11 @@ export class Bike {
 				name: "Fork",
 				start: this.points.head_tube_bottom,
 				end: this.points.front_hub
+			},
+			seat_post: {
+				name: "Seat Post",
+				start: this.points.seat_post_top,
+				end: this.points.seat_tube_junction
 			}
 		}
 
