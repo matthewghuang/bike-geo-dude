@@ -32,6 +32,6 @@ export const BikeParameterForm = (props) => {
       obj[name] = new_value == "0" ? void 0 : Number(new_value);
       props.set_parameters(obj);
     },
-    input_props: {type: "number", inputProps: {min: 0}}
+    input_props: {type: "number"}
   }))));
 };
