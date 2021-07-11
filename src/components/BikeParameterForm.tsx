@@ -49,7 +49,7 @@ export const BikeParameterForm: React.FC<{
 							obj[name] = new_value == "0" ? undefined : Number(new_value)
 							props.set_parameters(obj)
 						}}
-						input_props={{ type: "number", inputProps: { min: 0 } }}
+						input_props={{ type: "number" }}
 					/>
 				))}
 			</Grid>
